@@ -47,19 +47,19 @@ function run(db) {
 		var elements = $('#RSS_Table_page_news_1 > tbody > tr').each(function (i, row) {
 			var obj = {};
 			$(row).children().each(function (i, value) {
-				if (i === 1) {
-					obj.date = $(value).text;
-				} else if (i === 2) {
-					obj.title = $(value).text;
-				} else if (i === 3){
-					obj.hits = $(value).text;
+				if (i === 0) {
+					obj.$date = $(value).text();
+				} else if (i === 1) {
+					obj.$title = $(value).text();
+				} else if (i === 2){
+					obj.$hits = $(value).text();
 				}
 			});
 
 			updateRow(db, obj);
 		});
 
-		readRows(db);
+		// readRows(db);
 
 		db.close();
 	});
