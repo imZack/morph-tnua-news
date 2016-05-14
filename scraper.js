@@ -8,14 +8,14 @@ function initDatabase(callback) {
 	// Set up sqlite database.
 	var db = new sqlite3.Database("data.sqlite");
 	db.serialize(function() {
-		db.run("CREATE TABLE IF NOT EXISTS data (date TEXT, title TEXT, hits TEXT)");
+		db.run("CREATE TABLE IF NOT EXISTS data (date TEXT, title TEXT, hits TEXT, url TEXT)");
 		callback(db);
 	});
 }
 
 function updateRow(db, value) {
 	// Insert some data.
-	var statement = db.prepare("INSERT INTO data VALUES ($date, $title, $hits)");
+	var statement = db.prepare("INSERT INTO data VALUES ($date, $title, $hits, $url)");
 	statement.run(value);
 	statement.finalize();
 }
@@ -51,6 +51,7 @@ function run(db) {
 					obj.$date = $(value).text();
 				} else if (i === 1) {
 					obj.$title = $(value).text();
+					obj.$url = 'http://1www.tnua.edu.tw/news/' + $(value).children('a').attr('href');
 				} else if (i === 2){
 					obj.$hits = $(value).text();
 				}
@@ -58,8 +59,6 @@ function run(db) {
 
 			updateRow(db, obj);
 		});
-
-		// readRows(db);
 
 		db.close();
 	});
